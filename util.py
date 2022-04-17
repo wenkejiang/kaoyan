@@ -31,6 +31,7 @@ def wirte_result_yaml(name, value):
     stream = open(yamlPath, 'r', encoding='utf-8')
     data = yaml.load(stream, Loader=yaml.FullLoader)
     data[name] = value
+    print("插入信息：{}: {}".format(name, value))
     with open(yamlPath, 'w') as yaml_file:
         yaml_file.write(yaml.dump(data, default_flow_style=False))
 
