@@ -23,7 +23,7 @@ from requests import request, RequestException
 
 class BasicSpider(object):
 
-    @retry(stop_max_attempt_number=3, retry_on_result=lambda x: x is None, wait_fixed=2000)
+    @retry(stop_max_attempt_number=2, retry_on_result=lambda x: x is None, wait_fixed=2000)
     def downloader(self, url, method=None, header=None, timeout=None, binary=False, **kwargs):
         print(f'请求的URL: {url}')
         # 默认超时
@@ -33,7 +33,7 @@ class BasicSpider(object):
         _method = "GET" if not method else method
         try:
             urllib3.disable_warnings()
-            response = request(method=_method, url=url, headers=header, verify=False, **kwargs)
+            response = request(method=_method, url=url, headers=header, timeout=_maxTimeout, verify=False, **kwargs)
             encoding = cchardet.detect(response.content)['encoding']
             if response.status_code == 200:
                 return response.content if binary else response.content.decode(encoding)

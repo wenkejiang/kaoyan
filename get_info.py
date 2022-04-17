@@ -36,20 +36,23 @@ def get_info():
     end = []
     school_info = read_school_yaml("school")
     for info in school_info:
-        time.sleep(2)
-        hearders = {
-            "User-Agent": getheaders()
-        }
-        response = BasicSpider().downloader(url=info, method="GET", header=hearders)
-        pattern = r"调剂"
-        matchObj = re.findall(pattern, response)
-        print("{matchObj}".format(matchObj=matchObj))
-        length = len(matchObj)
-        result = read_school_yaml("result", info)
-        if length != result:
-            end.append(info)
-            wirte_result_yaml(info, length)
-            print("查询中。。。。。请等待")
+        try:
+            hearders = {
+                "User-Agent": getheaders()
+            }
+            response = BasicSpider().downloader(url=info, method="GET", header=hearders, timeout=2)
+            pattern = r"调剂"
+            matchObj = re.findall(pattern, response)
+            print("{matchObj}".format(matchObj=matchObj))
+            length = len(matchObj)
+            result = read_school_yaml("result", info)
+            if length != result:
+                end.append(info)
+                wirte_result_yaml(info, length)
+                print("查询中。。。。。请等待")
+        except Exception:
+            continue
+
     print(end)
     if len(end) == 0:
         do_dingding("没有更新！！！")
