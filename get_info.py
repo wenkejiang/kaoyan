@@ -36,7 +36,7 @@ def get_info():
     end = []
     school_info = read_school_yaml("school")
     for info in school_info:
-        time.sleep(0.3)
+        time.sleep(2)
         hearders = {
             "User-Agent": getheaders()
         }
